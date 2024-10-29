@@ -16,6 +16,8 @@ cDisciplina1 := Space(13)
 cDisciplina2 := Space(13)
 cDisciplina3 := Space(13)
 
+cSituacao := ''
+
 nSerie := 0
 nMensalidade := 0
 
@@ -173,19 +175,19 @@ nFrequencia1 := nDisciplina1Frequencia1 + nDisciplina1Frequencia2 + nDisciplina1
 
 if (nMediaDisciplina1 >= nMedia) 
    SetColor("G+/N")
-   @ 11,55 say AllTrim( Str( nMediaDisciplina1, 0, 1 ))
 else
    SetColor("R+/N")
-   @ 11,55 say AllTrim( Str( nMediaDisciplina1, 0, 1 ))
 endif
+
+@ 11,55 say AllTrim( Str( nMediaDisciplina1, 0, 1 ))
 
 if (nFrequencia1 < nFrequencia)
    SetColor("G+/N")
-   @ 11,63 say AllTrim( Str( nFrequencia1 ))
 else  
    SetColor("R+/N")
-   @ 11,63 say AllTrim( Str( nFrequencia1 ))
 endif
+
+@ 11,63 say AllTrim( Str( nFrequencia1 ))
 
 if (nMediaDisciplina1 < nMedia) .or. (nFrequencia1 >= nFrequencia)
    nContarReprovacao1++
@@ -193,13 +195,13 @@ endif
 
 if (nContarReprovacao1 >= 1)
    SetColor("R+/N")
-   @ 11,69 say "Reprovado"
-   @ 20,15 say cDisciplina1
+   cSituacao := "Reprovado"
 else
    SetColor("G+/N")
-   @ 11,69 say "Aprovado"
-   @ 20,02 say cDisciplina1
+   cSituacao := "Aprovado"
 endif
+@ 11,69 say cSituacao
+@ 20,02 say cDisciplina1
 
 // disciplina 2
 @ 13,01 get cDisciplina2            picture cMascaraTexo Valid !Empty( cDisciplina2 )
@@ -218,19 +220,19 @@ nFrequencia2 := nDisciplina2Frequencia1 + nDisciplina2Frequencia2 + nDisciplina2
 
 if (nMediaDisciplina2 >= nMedia) 
    SetColor("G+/N")
-   @ 13,55 say AllTrim( Str( nMediaDisciplina2, 0, 1 ))
 else
    SetColor("R+/N")
-   @ 13,55 say AllTrim( Str( nMediaDisciplina2, 0, 1 ))
 endif
+
+@ 13,55 say AllTrim( Str( nMediaDisciplina2, 0, 1 ))
 
 if (nFrequencia2 < nFrequencia)
    SetColor("G+/N")
-   @ 13,63 say AllTrim( Str( nFrequencia2 ))
 else  
    SetColor("R+/N")
-   @ 13,63 say AllTrim( Str( nFrequencia2 ))
 endif
+
+@ 13,63 say AllTrim( Str( nFrequencia2 ))
 
 if (nMediaDisciplina2 < nMedia) .or. (nFrequencia2 >= nFrequencia)
    nContarReprovacao2++
@@ -238,13 +240,14 @@ endif
 
 if (nContarReprovacao2 >= 1)
    SetColor("R+/N")
-   @ 13,69 say "Reprovado"
-   @ 21,15 say cDisciplina2
+   cSituacao := "Reprovado"
 else
    SetColor("G+/N")
-   @ 13,69 say "Aprovado"
-   @ 21,02 say cDisciplina2
+   cSituacao := "Aprovado"
 endif
+
+@ 13,69 say cSituacao
+@ 21,02 say cDisciplina2
 
 // disciplina 3
 @ 15,01 get cDisciplina3            picture cMascaraTexo Valid !Empty( cDisciplina3 )
@@ -271,11 +274,11 @@ endif
 
 if (nFrequencia3 < nFrequencia)
    SetColor("G+/N")
-   @ 15,63 say AllTrim( Str( nFrequencia3 ))
 else  
    SetColor("R+/N")
-   @ 15,63 say AllTrim( Str( nFrequencia3 ))
 endif
+
+@ 15,63 say AllTrim( Str( nFrequencia3 ))
 
 if (nMediaDisciplina3 < nMedia) .or. (nFrequencia3 >= nFrequencia)
    nContarReprovacao3++
@@ -283,13 +286,14 @@ endif
 
 if (nContarReprovacao3 >= 1)
    SetColor("R+/N")
-   @ 15,69 say "Reprovado"
-   @ 22,15 say cDisciplina3
+   cSituacao := "Reprovado"
 else 
    SetColor("G+/N")
-   @ 15,69 say "Aprovado"
-   @ 22,02 say cDisciplina3
+   cSituacao := "Aprovado"
 endif
+
+@ 15,69 say cSituacao
+@ 22,02 say cDisciplina3
 
 SetColor("W+/N")
 
@@ -299,14 +303,16 @@ nReajusteMensalidade := nMensalidade + (nMensalidade * ((20/100) * nContarReprov
 
 if (nContarReprovacao >= 1) .and. (nContarReprovacao <= 2) 
    SetColor("GR+/N")
-   @ 17,18 say "Dependencia"
+   cSituacao := "Dependencia"
 elseif (nContarReprovacao == 0)
    SetColor("G+/N")
-   @ 17,18 say "Aprovado"
+   cSituacao := "Aprovado"
 else 
    SetColor("R+/N")
-   @ 17,18 say "Reprovado"
+   cSituacao := "Reprovado"
 endif
+
+@ 17,18 say "Reprovado"
 
 SetColor("W+/N")
 
