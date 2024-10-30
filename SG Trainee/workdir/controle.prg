@@ -62,16 +62,20 @@ do while .t.
       nAdicionalNoturno       := 0
       nAdicionalInsalubridade := 0   
 
-      nTaxaAdicional := 0.09
-      nTaxaReducao   := 0.03
-      nTaxaIrrf      := 0.07
+      nTaxaAdicional          := 0.09
+      nTaxaReducao            := 0.03
+      nTaxaIrrf               := 0.07
+      nAdicionalAnos          := 0
+      nReducaoAnos            := 0
+      nIdade                  := 0
       
-      cColaborador := Space( 50 )
-      cSexo        := Space(1)
+      cColaborador            := Space( 50 )
+      cSexo                   := Space(1)
 
-      dNascimento := CToD("")
-      dAdmissao  := CToD("")
-      dDemissao   := CToD("")
+      dNascimento             := CToD("")
+      dAdmissao               := CToD("")
+      dDemissao               := CToD("")
+      nDesontoIrrf         := 0
 
       if nControle >= nNumeroEntrevistados 
 
@@ -112,13 +116,13 @@ do while .t.
       read
 
       //salario aposentadoria
-      if Year(dAdmissao)  < 2009 .and. Year(dDataDemissao) > 2012
+      if Year(dAdmissao)  < 2009 .and. Year(dDemissao) > 2012
 
          nAdicionalAnos := nSalarioBase * nTaxaAdicional
 
       endif 
 
-      if Year(dAdmissao) < 2015 .and. Year(dDataDemissao) > 2018
+      if Year(dAdmissao) < 2015 .and. Year(dDemissao) > 2018
 
          nReducaoAnos := nSalarioBase * nTaxaReducao
 
@@ -132,11 +136,12 @@ do while .t.
       endif 
 
       nAdicionalNoturno := (nAdicionalNoturno * nSalarioBase) / 100
-      nAdicionalInsalub := (nAdicionalInsalub * nSalarioBase) / 100
-      nSalarioBase      := nSalarioBase + nAdicionalNoturno + nAdicionalInsalub + nAdicionalAnos - nReducaoAnos - nDesontoIrrf 
-     
+      nAdicionalInsalubridade := (nAdicionalInsalubridade * nSalarioBase) / 100
+      nSalarioBase      := nSalarioBase + nAdicionalNoturno + nAdicionalInsalubridade + nAdicionalAnos - nReducaoAnos - nDesontoIrrf 
+      nIdade := Year(Date()) - Year(dNascimento)
+
       //calculos
-      if cSexoColaborador == 'M'
+      if cSexo == 'M'
 
          nTotalHomens ++
 
@@ -154,7 +159,7 @@ do while .t.
 
          endif 
 
-      elseif cSexoColaborador == 'F'
+      elseif cSexo == 'F'
 
          nTotalMulheres ++ 
 
