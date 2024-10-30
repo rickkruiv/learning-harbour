@@ -6,7 +6,7 @@ nColuna := 1
 nCont := 1
 cNome := Space(50)
 
-@ 00,00 to 24,79
+@ 00,00 to 24,79 double
 
 @ 01,01 say "Informe seu nome: "
 @ 02,01 say "Informe quantas vezes repetir: "
@@ -18,7 +18,7 @@ Read
 @ 01,01 clear to 02,80
 
 do while nCont <= nRepeticoes
-   @ nLinha++,nColuna say Transform(nCont, "9999") + "." +  cNome
+   @ nLinha++,nColuna say Transform(nCont, "9999") + "." +  AllTrim( cNome )
 
    nCont ++
    
@@ -26,7 +26,7 @@ do while nCont <= nRepeticoes
       nLinha := 1
       nColuna += len(AllTrim(cNome)) + 5
 
-      if (nColuna + len(AllTrim(cNome))) > 77
+      if (nColuna + len(AllTrim(cNome))) > 75
          @ 01,01 clear to 23,78
          nColuna := 1
       endif
