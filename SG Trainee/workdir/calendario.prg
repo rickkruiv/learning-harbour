@@ -81,7 +81,7 @@ do while .t.
 
       cMes := "Dezembro"
 
-   end if
+   endif
 
    // dias/mes
    if nMes == 4 .or. nMes == 6 .or. nMes == 9 .or. nMes == 11
