@@ -1,8 +1,33 @@
-clear
-Set Date to British
+Clear
+Set Date To British
 Set Century On
 
-// variaveis
+
+// Máscaras
+nMascaraValor := "@E 999.99"
+nMascaraNumero := "99"
+cMascaraTexto := "@!"
+
+// "FRONT"
+
+// Quadros e linhas
+@ 00,00 to 18,50 double
+@ 18,00 to 21,50 double
+@ 00,51 to 21,79 double
+@ 02,01 to 02,49
+@ 04,01 to 04,49
+@ 06,01 to 06,49
+@ 08,01 to 08,49
+@ 10,01 to 10,49
+@ 12,01 to 12,49
+@ 14,01 to 14,49
+@ 07,23 to 13,23
+@ 07,29 to 13,29
+@ 07,39 to 13,39
+@ 02,52 to 02,78
+
+Do While .T.
+// Variáveis
 nValorA := 0
 nValorB := 0
 nValorC := 0
@@ -29,137 +54,119 @@ cEndereco := Space(28)
 dCompra := Date()
 dEntrega := Date() + 3
 
-// mascaras
-nMascaraValor := "@E 999.99"
-nMascaraNumero := "99"
-cMascaraTexto := "@!"
+   @ 01,18 Say "SUPERMERCADAO"
 
-// "FRONT"
+   @ 03,02 Say "Cliente: "
+   @ 05,02 Say "Idade: "
+   @ 05,15 Say "Data: "
 
-// Quadros e linhas
-@ 00,00 to 18,50 double
-@ 18,00 to 21,50 double
+   @ 07,02 Say "Descricao"
+   @ 07,25 Say "QTD"
+   @ 07,31 Say "Valor"
+   @ 07,41 Say "Total"
 
-@ 00,51 to 21,79 double
+   @ 09,02 Say "1."
+   @ 11,02 Say "2."
+   @ 13,02 Say "3."
 
-@ 02,01 to 02,49
+   @ 16,02 Say "Valor total: "
+   @ 16,30 Say "QTD. Itens:"
 
-@ 04,01 to 04,49
-@ 06,01 to 06,49
-@ 08,01 to 08,49
+   @ 19,02 Say "Endereco:"
+   @ 20,02 Say "Data de Entrega:"
 
-@ 10,01 to 10,49
-@ 12,01 to 12,49
-@ 14,01 to 14,49
+   @ 01,60 Say "Nota fiscal"
+   @ 10,53 Say "Aguardando preenchimento."
 
-@ 07,23 to 13,23
-@ 07,29 to 13,29
-@ 07,39 to 13,39
+   // Cliente, idade, data
+   @ 03,10 Get cCliente     Picture cMascaraTexto  Valid !Empty( cCliente )
+   @ 05,09 Get nIdade       Picture nMascaraNumero Valid !Empty( nIdade ) .And. nIdade >= 18
+   @ 05,21 Get dCompra                           Valid !(dCompra < Date())
+   @ 09,04 Get cProdutoA    Picture cMascaraTexto  Valid !Empty( cProdutoA )
+   @ 09,25 Get nQuantidadeA Picture nMascaraNumero Valid !Empty( nQuantidadeA ) .And. nQuantidadeA >= 0 .And. nQuantidadeA <= 100
+   @ 09,32 Get nValorA      Picture nMascaraValor  Valid !Empty( nValorA ) .And. nValorA > 0
+   @ 11,04 Get cProdutoB    Picture cMascaraTexto  Valid !Empty( cProdutoB )
+   @ 11,25 Get nQuantidadeB Picture nMascaraNumero Valid !Empty( nQuantidadeB ) .And. nQuantidadeB >= 0 .And. nQuantidadeB <= 100
+   @ 11,32 Get nValorB      Picture nMascaraValor  Valid !Empty( nValorB ) .And. nValorB > 0
+   @ 13,04 Get cProdutoC    Picture cMascaraTexto  Valid !Empty( cProdutoC )
+   @ 13,25 Get nQuantidadeC Picture nMascaraNumero Valid !Empty( nQuantidadeC ) .And. nQuantidadeC >= 0 .And. nQuantidadeC <= 100
+   @ 13,32 Get nValorC      Picture nMascaraValor  Valid !Empty( nValorC ) .And. nValorC > 0
+   read
+   
+   nTotalA := nQuantidadeA * nValorA
+   @ 09,40 Say AllTrim( Str( nTotalA ) )
+   nTotalB := nQuantidadeB * nValorB
+   @ 11,40 Say AllTrim( Str( nTotalB ) )
+   nTotalC := nQuantidadeC * nValorC
+   @ 13,40 Say AllTrim( Str( nTotalC ) )
+   
+   nSubtotal := nTotalA + nTotalB + nTotalC
+   nTotalItens := nQuantidadeA + nQuantidadeB + nQuantidadeC
+   
+   @ 16,15 Say AllTrim( Str( nSubtotal ) )
+   @ 16,42 Say AllTrim( Str( nTotalItens ) )
 
-@ 02,52 to 02,78
+   // Finalizando compra
+   dEntrega := dCompra + 3
 
-// topicos
-@ 01,18 say "SUPERMERCADAO"
+   @ 19,12 Get cEndereco    Picture cMascaraTexto Valid !Empty( cEndereco )
+   @ 20,19 Get dEntrega                           Valid !Empty( dEntrega ) .And. !(dEntrega < (Date() + 3))
+   Read
 
-@ 03,02 say "Cliente: "
-@ 05,02 say "Idade: "
-@ 05,15 say "Data: "
+   If LastKey() == 27
+      
+      nEscolha := Alert("O QUE DESEJA?", {"CONTINUAR", "CANCELAR", "SAIR"})
 
-@ 07,02 say "Descricao"
-@ 07,25 say "QTD"
-@ 07,31 say "Valor"
-@ 07,41 say "Total"
+      If nEscolha == 3
+         Clear
+         Exit
+      ElseIf nEscolha == 2 
+         Loop
+      EndIf
 
-@ 09,02 say "1."
-@ 11,02 say "2."
-@ 13,02 say "3."
+   EndIf
 
-@ 16,02 say "Valor total: "
-@ 16,30 say "QTD. Itens:"
+   @ 10,52 Clear To 10,78
+   @ 05,52 To 05,78
+   @ 09,52 To 09,78
 
-@ 19,02 say "Endereco:"
-@ 20,02 say "Data de Entrega:"
+   @ 11,52 To 11,78
+   @ 13,52 To 13,78
 
-@ 01,60 say "Nota fiscal"
-@ 10,53 say "Aguardando preenchimento."
+   @ 16,51 To 21,79 Double
+   
+   @ 03,52 Say "Nome: " + cCliente
+   @ 04,52 Say "Idade: " + AllTrim( Str( nIdade ) )
+   @ 06,52 Say "Lista de Produtos"
+   @ 08,53 Say "Item"
+   @ 08,66 Say "QTD"
+   @ 08,72 Say "Valor"
 
-// cliente, idade, data
-@ 03,10 get cCliente     picture cMascaraTexto  Valid !Empty( cCliente )
-@ 05,09 get nIdade       picture nMascaraNumero Valid !Empty( nIdade ) .and. nIdade >= 18
-@ 05,21 get dCompra                             Valid !(dCompra < Date())
-read
+   @ 10,52 Say "1." + AllTrim( cProdutoA )
+   @ 12,52 Say "2." + AllTrim( cProdutoB )
+   @ 14,52 Say "3." + AllTrim( cProdutoC )
 
-// Produto A
-@ 09,04 get cProdutoA    picture cMascaraTexto  Valid !Empty( cProdutoA )
-@ 09,25 get nQuantidadeA picture nMascaraNumero Valid !Empty( nQuantidadeA ) .and. nQuantidadeA >= 0 .and. nQuantidadeA <= 100
-@ 09,32 get nValorA      picture nMascaraValor  Valid !Empty( nValorA ) .and. nValorA > 0
-read
+   @ 10,65 Say Str( nTotalA )
+   @ 12,65 Say Str( nTotalB )
+   @ 14,65 Say Str( nTotalC )
 
-nTotalA := nQuantidadeA * nValorA
-@ 09,40 say AllTrim( Str( nTotalA ) )
+   @ 10,67 Say AllTrim( Str( nQuantidadeA ) )
+   @ 12,67 Say AllTrim( Str( nQuantidadeB ) )
+   @ 14,67 Say AllTrim( Str( nQuantidadeC ) )
 
-// Produto B
-@ 11,04 get cProdutoB    picture cMascaraTexto  Valid !Empty( cProdutoB )
-@ 11,25 get nQuantidadeB picture nMascaraNumero Valid !Empty( nQuantidadeB ) .and. nQuantidadeB >= 0 .and. nQuantidadeB <= 100
-@ 11,32 get nValorB      picture nMascaraValor  Valid !Empty( nValorB ) .and. nValorB > 0
-read
+   @ 17,52 Say "Data da compra: " + DToC(dCompra) 
+   @ 18,52 Say "Data de entrega: " + DToC(dEntrega) 
+   @ 19,52 Say "Endereco:"
+   @ 20,52 Say cEndereco
 
-nTotalB := nQuantidadeB * nValorB
-@ 11,40 say AllTrim( Str( nTotalB ) )
+   If LastKey() == 27
+         
+      nEscolha := Alert("SAIR", {"SIM","NAO"})
 
-// Produto C
-@ 13,04 get cProdutoC    picture cMascaraTexto  Valid !Empty( cProdutoC )
-@ 13,25 get nQuantidadeC picture nMascaraNumero Valid !Empty( nQuantidadeC ) .and. nQuantidadeC >= 0 .and. nQuantidadeC <= 100
-@ 13,32 get nValorC      picture nMascaraValor  Valid !Empty( nValorC ) .and. nValorC > 0
-Read
+      If nEscolha == 1 
+         Clear
+         Exit
+      EndIf
+   EndIf
 
-nTotalC := nQuantidadeC * nValorC
-@ 13,40 say AllTrim( Str( nTotalC ) )
-
-nSubtotal := nTotalA + nTotalB + nTotalC
-nTotalItens := nQuantidadeA + nQuantidadeB + nQuantidadeC
-
-@ 16,15 say AllTrim( Str( nSubtotal ) )
-@ 16,42 say AllTrim( Str( nTotalItens ) )
-
-// finalizndo compra
-dEntrega := dCompra + 3
-
-@ 19,12 get cEndereco    picture cMascaraTexto Valid !Empty( cEndereco )
-@ 20,19 get dEntrega                           Valid !Empty( dEntrega ) .and. !(dEntrega < (Date() + 3))
-read
-
-@ 10,52 clear to 10,78
-@ 05,52 to 05,78
-@ 09,52 to 09,78
-
-@ 11,52 to 11,78
-@ 13,52 to 13,78
-
-@ 16,51 to 21,79 double
-
-@ 03,52 say "Nome: " + cCliente
-@ 04,52 say "Idade: " + AllTrim( Str( nIdade ) )
-@ 06,52 say "Lista de Produtos"
-@ 08,53 say "Item"
-@ 08,66 say "QTD"
-@ 08,72 say "Valor"
-
-@ 10,52 say "1." + AllTrim( cProdutoA )
-@ 12,52 say "2." + AllTrim( cProdutoB )
-@ 14,52 say "3." + AllTrim( cProdutoC )
-
-@ 10,65 say Str( nTotalA )
-@ 12,65 say Str( nTotalB )
-@ 14,65 say Str( nTotalC )
-
-@ 10,67 say AllTrim( Str( nQuantidadeA ) )
-@ 12,67 say AllTrim( Str( nQuantidadeB ) )
-@ 14,67 say AllTrim( Str( nQuantidadeC ) )
-
-@ 17,52 say "Data da compra: " + DToC(dCompra) 
-@ 18,52 say "Data de entrega: " + DToC(dEntrega) 
-@ 19,52 say "Endereco:"
-@ 20,52 say cEndereco
-
-inkey(0)
+EndDo

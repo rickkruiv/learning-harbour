@@ -1,22 +1,60 @@
 clear
 
-cPalavra          := Space(50)
-cPalavraInvertida := ""
+do while .t.
 
-nCont := 0
+   cTexo          := Space(50)
+   cTexoInvertido := ""
+   cCaractere     := ''
 
-@ 01,01 say "Informe uma palavra: "
+   nLinha        := 3
+   nTamanhoTexto := 0
 
-@ 01,23 get cPalavra picture "@!" Valid !Empty( cPalavra )
-read
+   @ 01,01 say "Informe um Texo: "
 
-nCont := len( cPalavra )
+   @ 01,18 get cTexo picture "@!" Valid !Empty( cTexo )
+   read
 
-do while nCont > 0
-   cPalavraInvertida += SubStr( cPalavra, nCont, 1 )
-   nCont --
+   if LastKey() == 27
+
+      nEscolha := Alert("DESEJA SAIR?", { "NAO", "SIM" })
+      if nEscolha == 2
+
+         clear
+         exit
+
+      endif
+
+      loop
+
+   endif
+
+   nTamanhoTexto := len( AllTrim( cTexo ) )
+
+   @ 03,01 clear to 24,79
+
+   do while nTamanhoTexto > 0
+
+      cCaractere := SubStr( cTexo, nTamanhoTexto, 1 )
+
+      if !Empty( cCaractere )
+
+         cTexoInvertido += cCaractere
+
+      elseif Empty( cCaractere )
+
+         @ nLinha,01 say cTexoInvertido
+         cTexoInvertido := ''
+         nLinha ++
+
+      endif
+
+      if nTamanhoTexto == 1
+         
+         @ nLinha,01 say AllTrim( cTexoInvertido )
+         
+      endif
+
+      nTamanhoTexto --
+
+   enddo
 enddo
-
-@ 02,01 say AllTrim( cPalavraInvertida )
-
-Inkey(0)

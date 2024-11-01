@@ -3,7 +3,6 @@ Set Century On
 Set Color to N/W
 Clear
 
-
 do while .t.
 
    nControle := 0
