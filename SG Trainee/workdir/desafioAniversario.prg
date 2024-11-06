@@ -14,6 +14,9 @@ do while .t.
    nDiaAtual   := Day( dAtual )
    dNascimento := CToD("")
 
+   nLinha  := 0
+   nColuna := 0
+
    @ 00,00 to 24,79 double
    @ 02,01 to 02,78
 
@@ -262,8 +265,87 @@ do while .t.
    @ 06,02 say "NASCIDO EM UMA.............: " + AllTrim( cDiaSemanaNascimento )
    @ 07,02 say "IDADE DE...................: " + cIdade
    @ 08,02 say "SIGNO......................: " + cSigno
-   @ 09,02 say "PROXIMO ANIVERSARIO EM.....: " + AllTrim(Str( nDiaNascimento )) + " DE " + cMesNascimento + " DE " + AllTrim(Str( nAnoProximoAniversario ))
+   @ 09,02 say "PROXIMO ANIVERSARIO EM.....: " + AllTrim(Str( Day(dProximoAniversario) )) + " DE " + cMesNascimento + " DE " + AllTrim(Str( nAnoProximoAniversario ))
    @ 10,02 say "PROXIMO ANIVERSARIO EM UMA.: " + cDiaSemanaProximoAniversario
+
+   SetColor("N/W")
+   @ 11,24 say "                             "
+   @ 12,24 say "                             "
+   @ 13,24 say "                             "
+   @ 14,24 say "                             "
+   @ 15,24 say "                             "
+   @ 16,24 say "                             "
+   @ 17,24 say "                             "
+   @ 18,24 say "                             "
+   @ 19,24 say "                             "
+   @ 20,24 say "                             "
+   @ 21,24 say "                             "
+   @ 22,24 say "                             "
+   @ 23,24 say "                             "
+
+   @ 11,25 say cMesNascimento 
+   @ 11,48 say AllTrim(Str( nAnoProximoAniversario ))
+   @ 12,25 say "DOM SEG TER QUA QUI SEX SAB"
+   // CALENDARIO
+
+   dPrimeiroDiaDoMes := CToD("01/" + Str(Month(dProximoAniversario),2) + "/" + Str(nAnoProximoAniversario,4)) 
+   nUltimoDiaMes     := Day(CToD( "01/" + Str(Month(dProximoAniversario+1),2) + "/" + Str(nAnoProximoAniversario,4))-1)
+   nDiaDaSemana      := DoW(dPrimeiroDiaDoMes)
+   nDia              := 1
+
+   nLinha  := 13
+   nColuna := 26 
+
+   do while nDia <= nUltimoDiaMes
+
+      if nDiaDaSemana == 1
+         
+         nColuna := 26
+      
+      elseif nDiaDaSemana == 2
+
+         ncoluna := 30
+      
+      elseif nDiaDaSemana == 3
+
+         ncoluna := 34
+      
+      elseif nDiaDaSemana == 4
+
+         ncoluna := 38
+      
+      elseif nDiaDaSemana == 5
+
+         ncoluna := 42
+      
+      elseif nDiaDaSemana == 6
+
+         ncoluna := 46
+      
+      elseif nDiaDaSemana == 7
+
+         ncoluna := 50
+      
+      endif
+
+      if nDia == nDiaNascimento
+         SetColor("W/R")
+      endif
+      
+      @ nLinha,nColuna say Str(nDia, 2)
+      SetColor("N/W")
+
+      nDiaDaSemana ++
+      nDia ++
+
+      if nDiaDaSemana > 7
+         
+         nDiaDaSemana := 1
+         nLinha+=2
+
+      endif
+   enddo
+
 
    Inkey( 0 )
    clear
