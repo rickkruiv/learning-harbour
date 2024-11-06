@@ -346,7 +346,7 @@ do while .t.
       endif
    enddo
 
-
+   SetColor('W/N')
    Inkey( 0 )
    clear
    

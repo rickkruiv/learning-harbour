@@ -62,7 +62,6 @@ do while .t.
          dCadastramento := CToD('')
          cLetra         := ''
          nTamanhoSenha  := 0
-         lSenhaValida   := .t. 
 
          nCodigo++
 
