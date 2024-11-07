@@ -1,6 +1,10 @@
+// HENRIQUE FERREIRA POLIZER
+
 clear
 Set Date to british
 Set Epoch to 1945
+Set message to 23 Center
+Set Wrap On
 
 nCodigo          := 0
 nVerificarCodigo := 0
@@ -23,34 +27,25 @@ nUltimoDiaMes := 0
 
 nColuna := 0
 nLinha  := 0
+
 do while .t.
    nOpcao := 0
 
    @ 00,00 to 24,79 double
-   @ 01,02 say "Gerenciador de senhas"
    @ 02,01 to 02,78 
-
-   @ 03,02 say "[1] Cadastrar"
-   @ 04,02 say "[2] Consultar"
-   @ 05,02 say "[3] Sair"
-
-   @ 07,02 say "Opcao: "
-   @ 07,10 get nOpcao picture "9" Valid !Empty( nOpcao ) .and. nOpcao < 4
-   read
-
+   
    if LastKey() == 27
-      nEscolha := Alert("Deseja Sair?", { "Sim", "Nao" })
-
-      if nEscolha == 1
-
-         clear
-         exit
-
-      endif
-
-      loop
+      
+      nOpcao := 3
 
    endif
+
+   @ 01,02 say "GERENCIADOR DE SENHAS"
+   @ 10,04 prompt "CADASTRAR" message "CADASTRAR UMA SENHA"
+   @ 12,04 prompt "CONSULTAR" message "CONSULTAR SENHAS"
+   @ 14,04 prompt "SAIR" message "FINALIZAR PROGRAMA"
+   menu to nOpcao
+
 
    @ 03,01 clear to 23,78
 
@@ -65,9 +60,9 @@ do while .t.
 
          nCodigo++
 
-         @ 03,02 say "Codigo...........: " + AllTrim(Str( nCodigo ))
-         @ 04,02 say "Senha............: "          
-         @ 05,02 say "Data de cadastro.: "
+         @ 03,02 say "CODIGO...........: " + AllTrim(Str( nCodigo ))
+         @ 04,02 say "SENHA............: "          
+         @ 05,02 say "DATA DE CADASTRO.: "
 
          @ 04,21 get cSenha         Valid !Empty( cSenha )
          @ 05,21 get dCadastramento Valid !Empty( dCadastramento ) .and. dCadastramento <= Date()
@@ -75,7 +70,7 @@ do while .t.
 
          if LastKey() == 27
 
-            nEscolha := Alert("Voltar?", { "Sim", "Nao" })
+            nEscolha := Alert("VOLTAR?", { "SIM", "NAO" })
 
             if nOpcao == 1
 
@@ -91,11 +86,11 @@ do while .t.
          nTamanhoSenha := Len(AllTrim( cSenha ))
 
          if nTamanhoSenha < 8
-            nEscolha := Alert("Senha deve possuir pelo menos 8 caracteres. Tente novamente!", {"Ok"})
+            nEscolha := Alert("SENHA DEVE POSSUIR PELO MENOS 8 CARACTERES. TENTE NOVAMENTE!", {"OK"})
             nCodigo--
             loop
          elseif nTamanhoSenha > 12
-            nEscolha := Alert("Senha deve possuir no maximo 12 caracteres. Tente novamente!", {"Ok"})
+            nEscolha := Alert("SENHA DEVE POSSUIR NO MAXIMO 12 CARACTERES. TENTE NOVAMENTE!", {"OK"})
             nCodigo--
             loop
          endif
@@ -128,7 +123,7 @@ do while .t.
          enddo
 
          if !lTemNumero .or. !lTemMaiuscula .or. !lTemMinuscula .or. !lTemSimbolo
-            nEscolha := Alert("Senha fraca. Tente novamente", {"Ok"})
+            nEscolha := Alert("SENHA FRACA. TENTE NOVAMENTE", {"OK"})
             nCodigo--
             loop
          endif
@@ -140,12 +135,12 @@ do while .t.
    elseif nOpcao == 2
       do while .t.
          if nCodigo > 0 
-            @ 03,02 say "Codigo...........: "
+            @ 03,02 say "CODIGO...........: "
             @ 03,21 get nVerificarCodigo picture "999" Valid !Empty( nVerificarCodigo )
             read
 
             if LastKey() == 27 
-               nEscolha := Alert("Voltar?", {"Sim", "Nao"})
+               nEscolha := Alert("VOLTAR?", {"SIM", "NAO"})
                if nEscolha == 1
                   exit
                endif
@@ -169,49 +164,21 @@ do while .t.
                dData         := CToD("01/" + Str(nMes, 2) + "/" + Str(nAno,2)) 
                nDiaDaSemana  := DoW(dData)
    
-               @ 04,02 say "Senha............: " + cSenhaVerificada
-               @ 05,02 say "Data de Cadastro.: " + DToC(dDataVerificada)
+               @ 04,02 say "SENHA............: " + cSenhaVerificada
+               @ 05,02 say "DATA DE CADASTRO.: " + DToC(dDataVerificada)
                @ 07,25 say "DOM SEG TER QUA QUI SEX SAB"
    
-               nColuna := 25
-               nLinha  := 09
+               nLinha       := 09
+               nColuna      := 21
+               nEspacamento := 4
    
                do while nDia <= nUltimoDiaMes
-                  if nDiaDaSemana == 1
-   
-                     nColuna := 25
-                  
-                  elseif nDiaDaSemana == 2
-   
-                     nColuna := 29
-   
-                  elseif nDiaDaSemana == 3
-   
-                     nColuna := 33
-   
-                  elseif nDiaDaSemana == 4
-   
-                     nColuna := 37
-   
-                  elseif nDiaDaSemana == 5
-   
-                     nColuna := 41
-   
-                  elseif nDiaDaSemana == 6
-   
-                     nColuna := 45
-   
-                  elseif nDiaDaSemana == 7
-   
-                     nColuna := 49
-   
-                  endif
-   
+       
                   if nDia == Day(dDataVerificada)
                      SetColor("N/W")
                   endif
    
-                  @ nLinha,nColuna say Str(nDia, 2)
+                  @ nLinha,(nColuna + (nEspacamento * nDiaDaSemana)) say Str(nDia, 2)
                
                   SetColor("W/N")
    
@@ -225,18 +192,18 @@ do while .t.
                
                enddo
             
-               @ 23,02 say "Precione qualquer tecla..."
+               @ 23,02 say "PRECIONE QUALQUER TECLA..."
                Inkey(0)
 
             else
-               nEscolha := Alert("Codigo " + AllTrim(Str(nVerificarCodigo)) + " nao existe", {"Ok"})
+               nEscolha := Alert("CODIGO " + AllTrim(Str(nVerificarCodigo)) + " NAO EXISTE", {"OK"})
                loop
             endif
 
             @ 03,01 clear to 23,78
          
          else
-            nEscolha := Alert("Nao existe senhas cadastradas", {"Ok"})
+            nEscolha := Alert("NAO EXISTE SENHAS CADASTRADAS", {"OK"})
             loop
          endif
       enddo
